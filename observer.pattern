@@ -15,7 +15,7 @@ class CentralBankPublisher:
     def subscribe(self, subscriber):
         self.__subscribers.append(subscriber)
 
-# HW1: unsubscribe
+# HW2: add the unsubscribe(subscriber) method
     def unsubscribe(self,subscriber):
         self.__subscribers.remove(subscriber)
     
@@ -23,14 +23,11 @@ class CentralBankPublisher:
         for subscriber in self.__subscribers:
             subscriber.update()
      
-    # HW2: add the unsubscribe(subscriber) method
-
     def setRate(self, from_currency, to_currency, rate):  # self - acces catre obiectul curent
  
  # HW1: use from_currecy, to_currency -> to set the correct value
         self.__rates [f"{from_currency}_{to_currency}"] = rate
         self.notifySubscribers()
-
 
     def __str__(self):
         return f"BANK RATES: \n {self.__rates}\n {self.__subscribers}"
