@@ -1,0 +1,66 @@
+# example of Observer PATTERN:
+
+# CentralBank - conversion rate(notificarea clientilor pentru schimbul ratei EUR si USD)
+
+class CentralBankPublisher:
+    def __init__(self):
+        # Bank Role
+        self.__rates = {              # __ encapsulare, restrictie accesului direct catre rate
+            "EUR_USD": None,
+            "USD_EUR": None,
+        }
+        # OBSERVER ROLE
+        self.__subscribers = []
+    
+    def subscribe(self, subscriber):
+        self.__subscribers.append(subscriber)
+
+# HW1: unsubscribe
+    def unsubscribe(self,subscriber):
+        self.__subscribers.remove(subscriber)
+    
+    def notifySubscribers(self):
+        for subscriber in self.__subscribers:
+            subscriber.update()
+     
+    # HW2: add the unsubscribe(subscriber) method
+
+    def setRate(self, from_currency, to_currency, rate):  # self - acces catre obiectul curent
+ 
+ # HW1: use from_currecy, to_currency -> to set the correct value
+        self.__rates [f"{from_currency}_{to_currency}"] = rate
+        self.notifySubscribers()
+
+
+    def __str__(self):
+        return f"BANK RATES: \n {self.__rates}\n {self.__subscribers}"
+    
+class Subscriber:
+
+    def __init__(self, name):
+        self.name = name
+    # obj ---> str
+    def __str__(self):
+        return f"COMPANY: {self.name}"
+    # obj ---> repr
+    def __repr__(self):
+        return self.__str__()
+    
+    def update(self):
+        print (f"{self.name} GOT THE NOTIFICATION")
+
+    
+    #################################
+
+cb = CentralBankPublisher()
+sub1 = Subscriber("Construction Materials Store")
+sub2 = Subscriber("AUTO Service \"Victory\"")
+
+cb.subscribe(sub1)
+cb.subscribe (sub2)
+cb.unsubscribe(sub1)
+
+cb.setRate("EUR", "USD", 1.2)
+cb.setRate("USD", "EUR", 1.3)
+
+print(cb)
